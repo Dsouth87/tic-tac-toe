@@ -1,0 +1,136 @@
+.character-selection {
+  background: rgba(0, 0, 0, 0.95);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+}
+
+.character-selection .characters {
+  font-size: 11rem;
+  padding: 4rem 2rem;
+}
+
+.characters .character {
+  margin-top: 3rem;
+  padding: 5rem 3rem;
+}
+
+.characters .char-o,
+.characters .char-x {
+  transition: color 0.4s ease;
+}
+
+.characters .char-x:hover {
+  color: #2a80df;
+}
+
+.characters .char-o:hover {
+  color: #58b900;
+}
+
+.game-board {
+  height: 95vh;
+  position: relative;
+}
+
+.board-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin-top: 4rem;
+}
+
+.board .row {
+  display: flex;
+}
+
+.board .box {
+  height: 200px;
+  width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 11rem;
+}
+
+.X-win a {
+  color: #2a80df !important;
+}
+
+.O-win a {
+  color: #58b900 !important;
+}
+
+.board .box-1,
+.board .box-2,
+.board .box-4,
+.board .box-5,
+.board .box-7,
+.board .box-8 {
+  border-left: solid #fff 4px;
+}
+
+.board .box-0,
+.board .box-1,
+.board .box-3,
+.board .box-4,
+.board .box-6,
+.board .box-7 {
+  border-right: solid #fff 4px;
+}
+
+.board .box-0,
+.board .box-1,
+.board .box-2,
+.board .box-3,
+.board .box-4,
+.board .box-5 {
+  border-bottom: solid #fff 4px;
+}
+
+.board .box-3,
+.board .box-4,
+.board .box-5,
+.board .box-6,
+.board .box-7,
+.board .box-8 {
+  border-top: solid #fff 4px;
+}
+
+.board .box:hover {
+  background: #111;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.dissapear {
+  z-index: -1;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.8s ease;
+}
+
+.announcements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 25vh;
+}
+
+.announcements h2 {
+  font-size: 3rem;
+}

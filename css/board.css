@@ -36,9 +36,20 @@
   color: #58b900;
 }
 
+.board-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  flex: 1;
+  padding-top: 2rem;
+}
+
 .game-board {
-  height: 95vh;
-  position: relative;
+  height: 60vh;
+
+  /* position: relative; */
+  /* background: #333; */
 }
 
 .board-container {
@@ -46,7 +57,7 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  margin-top: 4rem;
+  /* margin-top: 1rem; */
 }
 
 .board .row {
@@ -121,16 +132,39 @@
 }
 
 .announcements {
-  position: absolute;
+  /* background: #ccc; */
+  /* position: absolute;
   top: 0;
-  left: 0;
+  left: 0; */
+  margin-top: 7rem;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 25vh;
+  height: 12vh;
 }
 
 .announcements h2 {
+  padding-top: 3rem;
   font-size: 3rem;
+}
+
+.play-again-btn {
+  margin-bottom: 3rem;
+  display: none;
+  opacity: 0;
+}
+
+.btn-fade-in {
+  animation: button-fade-in forwards 2s ease;
+}
+
+@keyframes button-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }

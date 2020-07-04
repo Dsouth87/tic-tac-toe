@@ -26,12 +26,13 @@ const onMove = e => {
   markPlayerMove(position)
   removeMove(parseInt(position))
   e.target.firstChild.innerHTML = playerCharacter
-  if (checkForCatsGame()) {
-    return
-  }
   if (checkForWin('user')) {
     return
   }
+  if (checkForCatsGame()) {
+    return
+  }
+
   setTimeout(() => {
     computerEasyMove()
   }, 1000)
@@ -71,6 +72,15 @@ const removeMove = position => {
 const checkForCatsGame = () => {
   if (availableMoves.length === 0) {
     document.querySelector('.announcements h2').innerHTML = "Cat's Game!"
+    document.querySelectorAll('.box').forEach(box => {
+      if (box.querySelector('a').innerHTML === 'X') {
+        box.classList.add('X-win')
+      } else {
+        box.classList.add('O-win')
+      }
+    })
+    document.querySelector('.play-again-btn').style.display = 'block'
+    document.querySelector('.play-again-btn').classList.add('btn-fade-in')
     return true
   } else {
     return false
@@ -87,7 +97,6 @@ const checkForWin = player => {
   }
 
   if (board[0] + board[1] + board[2] == numToWin) {
-    console.log('win!')
     carryoutWin([0, 1, 2], player)
   } else if (board[3] + board[4] + board[5] == numToWin) {
     carryoutWin([3, 4, 5], player)
@@ -125,7 +134,14 @@ const carryoutWin = (winningPositions, player) => {
   //   button.disabled = true
   // })
   document.querySelector('.announcements h2').innerHTML = `${playerChar} Wins!`
+  document.querySelector('.play-again-btn').style.display = 'block'
+  document.querySelector('.play-again-btn').classList.add('btn-fade-in')
   return
+}
+
+const onClickPlayAgain = () => {
+  location.reload()
+  return false
 }
 
 document
@@ -135,6 +151,10 @@ document
 document
   .querySelectorAll('.box')
   .forEach(button => button.addEventListener('click', onMove))
+
+document
+  .querySelector('.play-again-btn')
+  .addEventListener('click', onClickPlayAgain)
 
 const firstMove = () => {
   if (Math.floor(Math.random() * 10) % 2 === 0) {

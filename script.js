@@ -43,7 +43,9 @@ const computerEasyMove = () => {
   const position =
     availableMoves[Math.floor(Math.random() * availableMoves.length)]
 
-  document.querySelector(`.box-${position}`).innerHTML = computerCharacter
+  document.querySelector(
+    `.box-${position}`
+  ).firstChild.innerHTML = computerCharacter
   markComputerMove(position)
   removeMove(position)
   checkForWin('computer')
@@ -119,9 +121,9 @@ const carryoutWin = (winningPositions, player) => {
       .querySelector(`.box-${winningPositions[i]}`)
       .classList.add(`${playerChar}-win`)
   }
-  document.querySelectorAll('.box a').forEach(button => {
-    button.disabled = true
-  })
+  // document.querySelectorAll('.box a').forEach(button => {
+  //   button.disabled = true
+  // })
   document.querySelector('.announcements h2').innerHTML = `${playerChar} Wins!`
   return
 }
@@ -143,6 +145,8 @@ const firstMove = () => {
       'Computer goes first'
   }
 }
+
+//TODO: cats game if you win on last move
 
 // let characters = document.querySelectorAll('.character-selection .character')
 // console.log(characters)

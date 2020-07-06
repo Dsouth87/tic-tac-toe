@@ -2,6 +2,19 @@ const board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 const availableMoves = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 
+const winningCombos = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6]
+]
+
+const corners = [0, 2, 6, 8]
+
 let playerCharacter
 let computerCharacter
 
@@ -34,8 +47,9 @@ const onMove = e => {
   }
 
   setTimeout(() => {
-    computerEasyMove()
+    computerHardMove()
   }, 1000)
+
   console.log(availableMoves)
   console.log(board)
 }
@@ -53,12 +67,116 @@ const computerEasyMove = () => {
   checkForCatsGame()
 }
 
+const computerMediumMove = () => {
+  let winningMove = findWin()
+  let blockingMove = findBlock()
+  console.log('winning move: ', winningMove)
+  if (winningMove) {
+    markComputerMove(winningMove)
+    removeMove(winningMove)
+    checkForWin('computer')
+    console.log('computer wins!')
+    return
+  } else if (blockingMove) {
+    markComputerMove(blockingMove)
+    removeMove(blockingMove)
+    checkForWin('computer')
+    console.log('computer blocks!')
+    return
+  } else {
+    computerEasyMove()
+  }
+}
+
+const findFirstMove = () => {
+  const index = board.indexOf(1)
+  if (index === 4) {
+    const move = corners[Math.floor(Math.random() * 4)]
+    return move
+  } else {
+    return 4
+  }
+}
+
+const computerHardMove = () => {
+  if (availableMoves.length === 8) {
+    const firstMove = findFirstMove()
+    markComputerMove(firstMove)
+    removeMove(firstMove)
+  } else {
+    computerMediumMove()
+  }
+}
+
+const findBlock = () => {
+  for (let i = 0; i < winningCombos.length; i++) {
+    if (
+      board[winningCombos[i][0]] +
+        board[winningCombos[i][1]] +
+        board[winningCombos[i][2]] ===
+      2
+    ) {
+      console.log('finding block: ', winningCombos[i])
+      for (let j = 0; j < 3; j++) {
+        console.log('bar: ', board[winningCombos[i][j]])
+        if (board[winningCombos[i][j]] === 0) {
+          console.log('blocking position: ', winningCombos[i][j])
+
+          console.log(
+            'board[winningCombos[i][j]]: ',
+            board[winningCombos[i][j]]
+          )
+          console.log('winningCombos[i][j]: ', winningCombos[i][j])
+
+          return winningCombos[i][j]
+        }
+      }
+      break
+    }
+  }
+  return false
+}
+
+const findWin = () => {
+  for (let i = 0; i < winningCombos.length; i++) {
+    if (
+      board[winningCombos[i][0]] +
+        board[winningCombos[i][1]] +
+        board[winningCombos[i][2]] ===
+      -2
+    ) {
+      console.log('finding win: ', winningCombos[i])
+      for (let j = 0; j < 3; j++) {
+        console.log('foo: ', board[winningCombos[i][j]])
+        if (board[winningCombos[i][j]] === 0) {
+          console.log('winning position: ', winningCombos[i][j])
+          document.querySelector(
+            `.box-${winningCombos[i][j]}`
+          ).firstChild.innerHTML = computerCharacter
+          console.log(
+            'board[winningCombos[i][j]]: ',
+            board[winningCombos[i][j]]
+          )
+          console.log('winningCombos[i][j]: ', winningCombos[i][j])
+
+          return winningCombos[i][j]
+        }
+      }
+      break
+    }
+  }
+  return false
+}
+
 const markPlayerMove = position => {
   board[position] = 1
 }
 
 const markComputerMove = position => {
   board[position] = -1
+  document.querySelector(
+    `.box-${position}`
+  ).firstChild.innerHTML = computerCharacter
 }
 
 const removeMove = position => {
@@ -96,29 +214,24 @@ const checkForWin = player => {
     numToWin = -3
   }
 
-  if (board[0] + board[1] + board[2] == numToWin) {
-    carryoutWin([0, 1, 2], player)
-  } else if (board[3] + board[4] + board[5] == numToWin) {
-    carryoutWin([3, 4, 5], player)
-  } else if (board[6] + board[7] + board[8] == numToWin) {
-    carryoutWin([6, 7, 8], player)
-  } else if (board[0] + board[3] + board[6] == numToWin) {
-    carryoutWin([0, 3, 6], player)
-  } else if (board[1] + board[4] + board[7] == numToWin) {
-    carryoutWin([1, 4, 7], player)
-  } else if (board[2] + board[5] + board[8] == numToWin) {
-    carryoutWin([2, 5, 8], player)
-  } else if (board[0] + board[4] + board[8] == numToWin) {
-    carryoutWin([0, 4, 8], player)
-  } else if (board[2] + board[4] + board[6] == numToWin) {
-    carryoutWin([2, 4, 6], player)
-  } else {
-    return false
+  for (let i = 0; i < winningCombos.length; i++) {
+    if (
+      board[winningCombos[i][0]] +
+        board[winningCombos[i][1]] +
+        board[winningCombos[i][2]] ===
+      numToWin
+    ) {
+      Win(
+        [winningCombos[i][0], winningCombos[i][1], winningCombos[i][2]],
+        player
+      )
+      return true
+    }
   }
-  return true
+  return false
 }
 
-const carryoutWin = (winningPositions, player) => {
+const Win = (winningPositions, player) => {
   var playerChar
   if (player == 'user') {
     playerChar = playerCharacter

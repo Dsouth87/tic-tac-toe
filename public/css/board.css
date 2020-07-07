@@ -74,11 +74,11 @@
   font-size: 11rem;
 }
 
-.X-win a {
+.X-win button {
   color: #2a80df !important;
 }
 
-.O-win a {
+.O-win button {
   color: #58b900 !important;
 }
 
@@ -118,7 +118,7 @@
   border-top: solid #fff 4px;
 }
 
-.board .box:hover {
+.board .box button:hover {
   background: #111;
   border-radius: 5px;
   cursor: pointer;

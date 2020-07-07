@@ -258,9 +258,7 @@ const Win = (winningPositions, player) => {
       .querySelector(`.box-${winningPositions[i]}`)
       .classList.add(`${playerChar}-win`)
   }
-  // document.querySelectorAll('.box a').forEach(button => {
-  //   button.disabled = true
-  // })
+
   win = true
   disableButtons()
   document.querySelector('.announcements h2').innerHTML = `${playerChar} Wins!`
@@ -296,7 +294,8 @@ const firstMove = () => {
   }
 }
 
-//TODO: cats game if you win on last move
-
-// let characters = document.querySelectorAll('.character-selection .character')
-// console.log(characters)
+// play can win by:
+// 1) going in corner
+// 2) computer goes in center
+// 3) player goes in side position
+// 4) if computer goes in wrong spot player can win

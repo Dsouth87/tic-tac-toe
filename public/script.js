@@ -35,10 +35,13 @@ const onClick = e => {
 }
 
 const onMove = e => {
-  position = e.target.classList[1][4]
+  disableButtons()
+  console.log(e.target)
+  position = e.target.classList[0][4]
+  console.log(position)
   markPlayerMove(position)
   removeMove(parseInt(position))
-  e.target.firstChild.innerHTML = playerCharacter
+  e.target.innerHTML = playerCharacter
   if (checkForWin('user')) {
     return
   }
@@ -48,6 +51,7 @@ const onMove = e => {
 
   setTimeout(() => {
     computerHardMove()
+    enableButtons()
   }, 1000)
 
   console.log(availableMoves)
@@ -191,7 +195,7 @@ const checkForCatsGame = () => {
   if (availableMoves.length === 0) {
     document.querySelector('.announcements h2').innerHTML = "Cat's Game!"
     document.querySelectorAll('.box').forEach(box => {
-      if (box.querySelector('a').innerHTML === 'X') {
+      if (box.querySelector('button').innerHTML === 'X') {
         box.classList.add('X-win')
       } else {
         box.classList.add('O-win')
@@ -231,6 +235,18 @@ const checkForWin = player => {
   return false
 }
 
+const disableButtons = () => {
+  document.querySelectorAll('button').forEach(button => {
+    button.disabled = 'disabled'
+  })
+}
+
+const enableButtons = () => {
+  document.querySelectorAll('button').forEach(button => {
+    button.disabled = false
+  })
+}
+
 const Win = (winningPositions, player) => {
   var playerChar
   if (player == 'user') {
@@ -262,7 +278,7 @@ document
   .addEventListener('click', onClick)
 
 document
-  .querySelectorAll('.box')
+  .querySelectorAll('button')
   .forEach(button => button.addEventListener('click', onMove))
 
 document

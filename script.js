@@ -284,15 +284,15 @@ document
   .querySelector('.play-again-btn')
   .addEventListener('click', onClickPlayAgain)
 
-const firstMove = () => {
-  if (Math.floor(Math.random() * 10) % 2 === 0) {
-    document.querySelector('.announcements h2').innerHTML =
-      'Player 1 goes first'
-  } else {
-    document.querySelector('.announcements h2').innerHTML =
-      'Computer goes first'
-  }
-}
+// const firstMove = () => {
+//   if (Math.floor(Math.random() * 10) % 2 === 0) {
+//     document.querySelector('.announcements h2').innerHTML =
+//       'Player 1 goes first'
+//   } else {
+//     document.querySelector('.announcements h2').innerHTML =
+//       'Computer goes first'
+//   }
+// }
 
 // play can win by:
 // 1) going in corner

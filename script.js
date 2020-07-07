@@ -30,7 +30,7 @@ const onClick = e => {
   document.querySelector('.character-selection').className =
     'character-selection dissapear'
   setTimeout(() => {
-    // firstMove()
+    firstMove()
   }, 1000)
 }
 

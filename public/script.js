@@ -14,7 +14,7 @@ const winningCombos = [
 ]
 
 const corners = [0, 2, 6, 8]
-
+let win = false
 let playerCharacter
 let computerCharacter
 
@@ -51,7 +51,9 @@ const onMove = e => {
 
   setTimeout(() => {
     computerHardMove()
-    enableButtons()
+    if (!win) {
+      enableButtons()
+    }
   }, 1000)
 
   console.log('available moves: ', availableMoves)
@@ -94,16 +96,6 @@ const computerMediumMove = () => {
   }
 }
 
-const findFirstMove = () => {
-  const index = board.indexOf(1)
-  if (index === 4) {
-    const move = corners[Math.floor(Math.random() * 4)]
-    return move
-  } else {
-    return 4
-  }
-}
-
 const computerHardMove = () => {
   if (availableMoves.length === 8) {
     const firstMove = findFirstMove()
@@ -111,6 +103,16 @@ const computerHardMove = () => {
     removeMove(firstMove)
   } else {
     computerMediumMove()
+  }
+}
+
+const findFirstMove = () => {
+  const index = board.indexOf(1)
+  if (index === 4) {
+    const move = corners[Math.floor(Math.random() * 4)]
+    return move
+  } else {
+    return 4
   }
 }
 
@@ -228,12 +230,20 @@ const checkForWin = player => {
   return false
 }
 
-const disableButton = position => {
-  document.querySelector(`btn-${position}`).disabled = 'disabled'
+const disableButtons = () => {
+  console.log('disabling buttons')
+  document.querySelectorAll('button').forEach(button => {
+    button.disabled = 'disabled'
+  })
 }
 
-const enableButton = position => {
-  document.querySelector(`btn-${position}`).disabled = false
+const enableButtons = () => {
+  console.log('enabling buttons again!')
+  console.log('available moves*: ', availableMoves)
+  availableMoves.forEach(position => {
+    console.log(position)
+    document.querySelector(`.btn-${position}`).disabled = false
+  })
 }
 
 const Win = (winningPositions, player) => {
@@ -251,6 +261,8 @@ const Win = (winningPositions, player) => {
   // document.querySelectorAll('.box a').forEach(button => {
   //   button.disabled = true
   // })
+  win = true
+  disableButtons()
   document.querySelector('.announcements h2').innerHTML = `${playerChar} Wins!`
   document.querySelector('.play-again-btn').style.display = 'block'
   document.querySelector('.play-again-btn').classList.add('btn-fade-in')

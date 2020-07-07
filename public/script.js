@@ -36,9 +36,9 @@ const onClick = e => {
 
 const onMove = e => {
   disableButtons()
-  console.log(e.target)
+
   position = e.target.classList[0][4]
-  console.log(position)
+
   markPlayerMove(position)
   removeMove(parseInt(position))
   e.target.innerHTML = playerCharacter
@@ -54,8 +54,8 @@ const onMove = e => {
     enableButtons()
   }, 1000)
 
-  console.log(availableMoves)
-  console.log(board)
+  console.log('available moves: ', availableMoves)
+  console.log('gameboard: ', board)
 }
 
 const computerEasyMove = () => {
@@ -74,14 +74,16 @@ const computerEasyMove = () => {
 const computerMediumMove = () => {
   let winningMove = findWin()
   let blockingMove = findBlock()
-  console.log('winning move: ', winningMove)
+
   if (winningMove) {
+    console.log('winning move: ', winningMove)
     markComputerMove(winningMove)
     removeMove(winningMove)
     checkForWin('computer')
     console.log('computer wins!')
     return
-  } else if (blockingMove) {
+  } else if (blockingMove | (String(blockingMove) === '0')) {
+    console.log('blocking move: ', blockingMove)
     markComputerMove(blockingMove)
     removeMove(blockingMove)
     checkForWin('computer')
@@ -120,18 +122,9 @@ const findBlock = () => {
         board[winningCombos[i][2]] ===
       2
     ) {
-      console.log('finding block: ', winningCombos[i])
+      console.log('combo to block: ', winningCombos[i])
       for (let j = 0; j < 3; j++) {
-        console.log('bar: ', board[winningCombos[i][j]])
         if (board[winningCombos[i][j]] === 0) {
-          console.log('blocking position: ', winningCombos[i][j])
-
-          console.log(
-            'board[winningCombos[i][j]]: ',
-            board[winningCombos[i][j]]
-          )
-          console.log('winningCombos[i][j]: ', winningCombos[i][j])
-
           return winningCombos[i][j]
         }
       }
@@ -185,7 +178,7 @@ const markComputerMove = position => {
 
 const removeMove = position => {
   const index = availableMoves.indexOf(position)
-  console.log('index: ', index)
+
   if (index > -1) {
     availableMoves.splice(index, 1)
   }
@@ -235,16 +228,12 @@ const checkForWin = player => {
   return false
 }
 
-const disableButtons = () => {
-  document.querySelectorAll('button').forEach(button => {
-    button.disabled = 'disabled'
-  })
+const disableButton = position => {
+  document.querySelector(`btn-${position}`).disabled = 'disabled'
 }
 
-const enableButtons = () => {
-  document.querySelectorAll('button').forEach(button => {
-    button.disabled = false
-  })
+const enableButton = position => {
+  document.querySelector(`btn-${position}`).disabled = false
 }
 
 const Win = (winningPositions, player) => {

@@ -27,11 +27,11 @@ const onClick = e => {
     computerCharacter = 'X'
   }
 
-  //   document.querySelector('.character-selection').className =
-  //     'character-selection dissapear'
-  //   setTimeout(() => {
-  //     // firstMove()
-  //   }, 1000)
+  document.querySelector('.character-selection').className =
+    'character-selection dissapear'
+  setTimeout(() => {
+    // firstMove()
+  }, 1000)
 }
 
 const onMove = e => {
@@ -284,15 +284,13 @@ document
   .querySelector('.play-again-btn')
   .addEventListener('click', onClickPlayAgain)
 
-// const firstMove = () => {
-//   if (Math.floor(Math.random() * 10) % 2 === 0) {
-//     document.querySelector('.announcements h2').innerHTML =
-//       'Player 1 goes first'
-//   } else {
-//     document.querySelector('.announcements h2').innerHTML =
-//       'Computer goes first'
-//   }
-// }
+const firstMove = () => {
+  if (Math.floor(Math.random() * 10) % 2 === 0) {
+    document.querySelector('.announcements h2').innerHTML = ''
+  } else {
+    document.querySelector('.announcements h2').innerHTML = ''
+  }
+}
 
 // play can win by:
 // 1) going in corner

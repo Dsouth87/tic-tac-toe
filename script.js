@@ -27,12 +27,12 @@ const onClick = e => {
     computerCharacter = 'X'
   }
 
-//   document.querySelector('.character-selection').className =
-//     'character-selection dissapear'
-//   setTimeout(() => {
-//     // firstMove()
-//   }, 1000)
-// }
+  //   document.querySelector('.character-selection').className =
+  //     'character-selection dissapear'
+  //   setTimeout(() => {
+  //     // firstMove()
+  //   }, 1000)
+}
 
 const onMove = e => {
   disableButtons()

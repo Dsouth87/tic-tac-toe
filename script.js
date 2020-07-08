@@ -1,6 +1,6 @@
-const board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+let board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-const availableMoves = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+let availableMoves = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 
 const winningCombos = [
   [0, 1, 2],
@@ -14,6 +14,7 @@ const winningCombos = [
 ]
 
 const corners = [0, 2, 6, 8]
+const sides = [1, 3, 5, 7]
 let win = false
 let playerCharacter
 let computerCharacter
@@ -35,7 +36,7 @@ const onClick = e => {
 }
 
 const onMove = e => {
-  disableButtons()
+  disableAllButtons()
 
   position = e.target.classList[0][4]
 
@@ -55,9 +56,6 @@ const onMove = e => {
       enableButtons()
     }
   }, 1000)
-
-  console.log('available moves: ', availableMoves)
-  console.log('gameboard: ', board)
 }
 
 const computerEasyMove = () => {
@@ -78,18 +76,16 @@ const computerMediumMove = () => {
   let blockingMove = findBlock()
 
   if (winningMove) {
-    console.log('winning move: ', winningMove)
     markComputerMove(winningMove)
     removeMove(winningMove)
     checkForWin('computer')
-    console.log('computer wins!')
+
     return
   } else if (blockingMove | (String(blockingMove) === '0')) {
-    console.log('blocking move: ', blockingMove)
     markComputerMove(blockingMove)
     removeMove(blockingMove)
     checkForWin('computer')
-    console.log('computer blocks!')
+
     return
   } else {
     computerEasyMove()
@@ -101,6 +97,14 @@ const computerHardMove = () => {
     const firstMove = findFirstMove()
     markComputerMove(firstMove)
     removeMove(firstMove)
+  } else if (availableMoves.length === 6) {
+    const secondMove = findSecondMove()
+    if (secondMove || secondMove === 0) {
+      markComputerMove(secondMove)
+      removeMove(secondMove)
+    } else {
+      computerMediumMove()
+    }
   } else {
     computerMediumMove()
   }
@@ -109,10 +113,33 @@ const computerHardMove = () => {
 const findFirstMove = () => {
   const index = board.indexOf(1)
   if (index === 4) {
-    const move = corners[Math.floor(Math.random() * 4)]
-    return move
+    return corners[Math.floor(Math.random() * 4)]
   } else {
     return 4
+  }
+}
+
+const findSecondMove = () => {
+  if (board[0] + board[8] === 2 || board[2] + board[6] === 2) {
+    return sides[Math.floor(Math.random() * 4)]
+  } else if (board[0] + board[7] === 2) {
+    return [3, 6][Math.floor(Math.random() * 2)]
+  } else if (board[0] + board[5] === 2) {
+    return [1, 2][Math.floor(Math.random() * 2)]
+  } else if (board[2] + board[3] === 2) {
+    return [0, 1][Math.floor(Math.random() * 2)]
+  } else if (board[2] + board[7] === 2) {
+    return [5, 8][Math.floor(Math.random() * 2)]
+  } else if (board[8] + board[3] === 2) {
+    return [6, 7][Math.floor(Math.random() * 2)]
+  } else if (board[8] + board[1] === 2) {
+    return [2, 5][Math.floor(Math.random() * 2)]
+  } else if (board[6] + board[1] === 2) {
+    return [0, 3][Math.floor(Math.random() * 2)]
+  } else if (board[6] + board[5] === 2) {
+    return [7, 8][Math.floor(Math.random() * 2)]
+  } else {
+    return false
   }
 }
 
@@ -124,7 +151,6 @@ const findBlock = () => {
         board[winningCombos[i][2]] ===
       2
     ) {
-      console.log('combo to block: ', winningCombos[i])
       for (let j = 0; j < 3; j++) {
         if (board[winningCombos[i][j]] === 0) {
           return winningCombos[i][j]
@@ -144,19 +170,11 @@ const findWin = () => {
         board[winningCombos[i][2]] ===
       -2
     ) {
-      console.log('finding win: ', winningCombos[i])
       for (let j = 0; j < 3; j++) {
-        console.log('foo: ', board[winningCombos[i][j]])
         if (board[winningCombos[i][j]] === 0) {
-          console.log('winning position: ', winningCombos[i][j])
           document.querySelector(
             `.box-${winningCombos[i][j]}`
           ).firstChild.innerHTML = computerCharacter
-          console.log(
-            'board[winningCombos[i][j]]: ',
-            board[winningCombos[i][j]]
-          )
-          console.log('winningCombos[i][j]: ', winningCombos[i][j])
 
           return winningCombos[i][j]
         }
@@ -230,18 +248,20 @@ const checkForWin = player => {
   return false
 }
 
-const disableButtons = () => {
-  console.log('disabling buttons')
+const disableAllButtons = () => {
   document.querySelectorAll('button').forEach(button => {
     button.disabled = 'disabled'
   })
 }
 
+const enableAllButtons = () => {
+  document.querySelectorAll('button').forEach(button => {
+    button.disabled = false
+  })
+}
+
 const enableButtons = () => {
-  console.log('enabling buttons again!')
-  console.log('available moves*: ', availableMoves)
   availableMoves.forEach(position => {
-    console.log(position)
     document.querySelector(`.btn-${position}`).disabled = false
   })
 }
@@ -260,16 +280,33 @@ const Win = (winningPositions, player) => {
   }
 
   win = true
-  disableButtons()
+  disableAllButtons()
   document.querySelector('.announcements h2').innerHTML = `${playerChar} Wins!`
   document.querySelector('.play-again-btn').style.display = 'block'
   document.querySelector('.play-again-btn').classList.add('btn-fade-in')
   return
 }
 
-const onClickPlayAgain = () => {
+const onClickBack = () => {
   location.reload()
   return false
+}
+
+const onClickPlayAgain = () => {
+  document.querySelectorAll('button').forEach(button => {
+    button.innerHTML = ''
+  })
+  document.querySelector('.announcements h2').innerHTML = ''
+  availableMoves = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+  board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+  document.querySelector('.play-again-btn').style.display = 'none'
+  document.querySelector('.play-again-btn').classList.remove('btn-fade-in')
+  win = false
+  document.querySelectorAll('.box').forEach(box => {
+    let position = box.classList[1][4]
+    box.className = `box box-${position}`
+  })
+  enableAllButtons()
 }
 
 document
@@ -284,6 +321,8 @@ document
   .querySelector('.play-again-btn')
   .addEventListener('click', onClickPlayAgain)
 
+document.querySelector('.back-btn').addEventListener('click', onClickBack)
+
 const firstMove = () => {
   if (Math.floor(Math.random() * 10) % 2 === 0) {
     document.querySelector('.announcements h2').innerHTML = ''
@@ -291,9 +330,3 @@ const firstMove = () => {
     document.querySelector('.announcements h2').innerHTML = ''
   }
 }
-
-// play can win by:
-// 1) going in corner
-// 2) computer goes in center
-// 3) player goes in side position
-// 4) if computer goes in wrong spot player can win

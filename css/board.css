@@ -159,6 +159,17 @@
   animation: button-fade-in forwards 2s ease;
 }
 
+.btn-fade-out {
+  animation: button-fade-out forwards 2s ease;
+}
+
+.back-btn {
+  padding: 0.2rem 0.8rem;
+  position: fixed;
+  left: 100px;
+  top: 80px;
+}
+
 @keyframes button-fade-in {
   from {
     opacity: 0;
@@ -166,5 +177,15 @@
 
   to {
     opacity: 1;
+  }
+}
+
+@keyframes button-fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
   }
 }

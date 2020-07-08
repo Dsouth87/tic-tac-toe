@@ -16,11 +16,12 @@ const winningCombos = [
 const corners = [0, 2, 6, 8]
 const sides = [1, 3, 5, 7]
 let win = false
+let difficulty
 let playerCharacter
 let computerCharacter
 
 const onClick = e => {
-  if (e.target.innerHTML === 'X') {
+  if (e.target.innerHTML.trim() === 'X') {
     playerCharacter = 'X'
     computerCharacter = 'O'
   } else {
@@ -28,18 +29,20 @@ const onClick = e => {
     computerCharacter = 'X'
   }
 
-  document.querySelector('.character-selection').className =
-    'character-selection dissapear'
+  document.querySelector('.pre-game-options').classList.add('dissapear')
+
   setTimeout(() => {
     firstMove()
   }, 1000)
 }
 
 const onMove = e => {
+  console.log('function: OnMove')
   disableAllButtons()
-
-  position = e.target.classList[0][4]
-
+  console.log('Player: ', playerCharacter)
+  position = e.target.classList[1][4]
+  console.log(e.target.classList)
+  console.log(position)
   markPlayerMove(position)
   removeMove(parseInt(position))
   e.target.innerHTML = playerCharacter
@@ -51,7 +54,22 @@ const onMove = e => {
   }
 
   setTimeout(() => {
-    computerHardMove()
+    console.log(difficulty)
+    switch (difficulty) {
+      case 'Easy':
+        computerEasyMove()
+        break
+      case 'Medium':
+        computerMediumMove()
+        console.log('medium works')
+        break
+      case 'Hard':
+        computerHardMove()
+        break
+      default:
+        return
+    }
+
     if (!win) {
       enableButtons()
     }
@@ -59,21 +77,22 @@ const onMove = e => {
 }
 
 const computerEasyMove = () => {
+  console.log('easy mode running')
   const position =
     availableMoves[Math.floor(Math.random() * availableMoves.length)]
-
-  document.querySelector(
-    `.box-${position}`
-  ).firstChild.innerHTML = computerCharacter
+  document.querySelector(`.btn-${position}`).innerHTML = computerCharacter
   markComputerMove(position)
   removeMove(position)
+  console.log(position)
   checkForWin('computer')
   checkForCatsGame()
 }
 
 const computerMediumMove = () => {
+  console.log('medium mode running')
   let winningMove = findWin()
   let blockingMove = findBlock()
+  console.log(blockingMove)
 
   if (winningMove) {
     markComputerMove(winningMove)
@@ -173,8 +192,8 @@ const findWin = () => {
       for (let j = 0; j < 3; j++) {
         if (board[winningCombos[i][j]] === 0) {
           document.querySelector(
-            `.box-${winningCombos[i][j]}`
-          ).firstChild.innerHTML = computerCharacter
+            `.btn-${winningCombos[i][j]}`
+          ).innerHTML = computerCharacter
 
           return winningCombos[i][j]
         }
@@ -191,9 +210,7 @@ const markPlayerMove = position => {
 
 const markComputerMove = position => {
   board[position] = -1
-  document.querySelector(
-    `.box-${position}`
-  ).firstChild.innerHTML = computerCharacter
+  document.querySelector(`.btn-${position}`).innerHTML = computerCharacter
 }
 
 const removeMove = position => {
@@ -309,12 +326,54 @@ const onClickPlayAgain = () => {
   enableAllButtons()
 }
 
+const onClickDifficulty = e => {
+  difficulty = e.target.innerHTML
+  e.target.classList.add('selected')
+  switch (e.target.innerHTML) {
+    case 'Hard':
+      e.target.style.color = 'rgba(255, 0, 0, 0.666)'
+      document.querySelector('.easy').style.color = '#222'
+      document.querySelector('.medium').style.color = '#222'
+      break
+    case 'Medium':
+      e.target.style.color = 'rgba(255, 255, 0, 0.927)'
+      document.querySelector('.hard').style.color = '#222'
+      document.querySelector('.easy').style.color = '#222'
+      break
+
+    case 'Easy':
+      e.target.style.color = 'rgba(0, 128, 0, 0.892)'
+      document.querySelector('.hard').style.color = '#222'
+      document.querySelector('.medium').style.color = '#222'
+      break
+    default:
+      return
+  }
+  document.querySelector('.difficulty-selection').classList.add('de-emphasize')
+  document.querySelectorAll('.difficulty-level').forEach(difficulty => {
+    if (!difficulty.classList.contains('selected')) {
+      difficulty.classList.add('de-emphasize')
+    }
+  })
+  document.querySelectorAll('.character').forEach(character => {
+    character.disabled = false
+    character.classList.remove('de-emphasize')
+  })
+
+  document
+    .querySelector('.character-selection')
+    .classList.remove('de-emphasize')
+}
 document
   .querySelector('.character-selection')
   .addEventListener('click', onClick)
 
 document
-  .querySelectorAll('button')
+  .querySelector('.difficulty-levels')
+  .addEventListener('click', onClickDifficulty)
+
+document
+  .querySelectorAll('.game-tile')
   .forEach(button => button.addEventListener('click', onMove))
 
 document

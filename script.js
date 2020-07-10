@@ -19,8 +19,9 @@ let win = false
 let difficulty
 let playerCharacter
 let computerCharacter
+let blockingMove
 
-const onClick = e => {
+const onClickCharacter = e => {
   if (e.target.innerHTML.trim() === 'X') {
     playerCharacter = 'X'
     computerCharacter = 'O'
@@ -37,15 +38,14 @@ const onClick = e => {
 }
 
 const onMove = e => {
-  console.log('function: OnMove')
   disableAllButtons()
-  console.log('Player: ', playerCharacter)
+
   position = e.target.classList[1][4]
-  console.log(e.target.classList)
-  console.log(position)
+
   markPlayerMove(position)
   removeMove(parseInt(position))
   e.target.innerHTML = playerCharacter
+
   if (checkForWin('user')) {
     return
   }
@@ -54,17 +54,18 @@ const onMove = e => {
   }
 
   setTimeout(() => {
-    console.log(difficulty)
     switch (difficulty) {
       case 'Easy':
         computerEasyMove()
+
         break
       case 'Medium':
         computerMediumMove()
-        console.log('medium works')
+
         break
       case 'Hard':
         computerHardMove()
+
         break
       default:
         return
@@ -77,30 +78,27 @@ const onMove = e => {
 }
 
 const computerEasyMove = () => {
-  console.log('easy mode running')
   const position =
     availableMoves[Math.floor(Math.random() * availableMoves.length)]
   document.querySelector(`.btn-${position}`).innerHTML = computerCharacter
   markComputerMove(position)
   removeMove(position)
-  console.log(position)
+
   checkForWin('computer')
   checkForCatsGame()
 }
 
 const computerMediumMove = () => {
-  console.log('medium mode running')
   let winningMove = findWin()
-  let blockingMove = findBlock()
-  console.log(blockingMove)
+  blockingMove = findBlock()
 
-  if (winningMove) {
+  if (winningMove || String(winningMove) === '0') {
     markComputerMove(winningMove)
     removeMove(winningMove)
     checkForWin('computer')
 
     return
-  } else if (blockingMove | (String(blockingMove) === '0')) {
+  } else if (blockingMove || String(blockingMove) === '0') {
     markComputerMove(blockingMove)
     removeMove(blockingMove)
     checkForWin('computer')
@@ -117,6 +115,12 @@ const computerHardMove = () => {
     markComputerMove(firstMove)
     removeMove(firstMove)
   } else if (availableMoves.length === 6) {
+    blockingMove = findBlock()
+
+    if (blockingMove || String(blockingMove) === '0') {
+      computerMediumMove()
+      return
+    }
     const secondMove = findSecondMove()
     if (secondMove || secondMove === 0) {
       markComputerMove(secondMove)
@@ -141,6 +145,10 @@ const findFirstMove = () => {
 const findSecondMove = () => {
   if (board[0] + board[8] === 2 || board[2] + board[6] === 2) {
     return sides[Math.floor(Math.random() * 4)]
+  } else if (board[4] + board[0] === 2 || board[4] + board[8] === 2) {
+    return [2, 6][Math.floor(Math.random() * 2)]
+  } else if (board[4] + board[2] === 2 || board[4] + board[6] === 2) {
+    return [0, 8][Math.floor(Math.random() * 2)]
   } else if (board[0] + board[7] === 2) {
     return [3, 6][Math.floor(Math.random() * 2)]
   } else if (board[0] + board[5] === 2) {
@@ -366,7 +374,7 @@ const onClickDifficulty = e => {
 }
 document
   .querySelector('.character-selection')
-  .addEventListener('click', onClick)
+  .addEventListener('click', onClickCharacter)
 
 document
   .querySelector('.difficulty-levels')

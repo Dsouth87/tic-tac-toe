@@ -322,4 +322,22 @@
     justify-content: center;
     height: 12vh;
   }
+
+  .difficulty-levels .difficulty-level {
+    padding: 0 2rem;
+    font-size: 4rem;
+  }
+
+  .difficulty-levels {
+    margin-bottom: 0;
+  }
+
+  .character-selection {
+    font-size: 1rem;
+    margin-top: 0;
+  }
+
+  .difficulty-selection {
+    font-size: 1rem;
+  }
 }

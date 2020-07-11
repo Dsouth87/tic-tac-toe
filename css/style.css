@@ -122,3 +122,9 @@ button {
     opacity: 1;
   }
 }
+
+@media (max-width: 500px) {
+  body {
+    /* background: red; */
+  }
+}

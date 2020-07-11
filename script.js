@@ -57,15 +57,12 @@ const onMove = e => {
     switch (difficulty) {
       case 'Easy':
         computerEasyMove()
-
         break
       case 'Medium':
         computerMediumMove()
-
         break
       case 'Hard':
         computerHardMove()
-
         break
       default:
         return

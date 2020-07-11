@@ -293,7 +293,7 @@
     width: 110px;
   }
   .game-board {
-    height: 50vh;
+    height: 40vh;
   }
 
   button {
@@ -314,7 +314,7 @@
   }
 
   .announcements {
-    margin-top: 4rem;
+    margin-top: 2rem;
     margin-bottom: 3rem;
     width: 100%;
     display: flex;

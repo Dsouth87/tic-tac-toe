@@ -115,7 +115,6 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  /* margin-top: 1rem; */
 }
 
 .board .row {
@@ -130,14 +129,6 @@
   justify-content: center;
   text-align: center;
 }
-
-/* .X-win button {
-  color: #2a80df !important;
-}
-
-.O-win button {
-  color: #58b900 !important;
-} */
 
 .board .box-1,
 .board .box-2,

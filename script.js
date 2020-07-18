@@ -1,7 +1,4 @@
-let board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-
-let availableMoves = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-
+// Game Constants
 const winningCombos = [
   [0, 1, 2],
   [3, 4, 5],
@@ -12,68 +9,21 @@ const winningCombos = [
   [0, 4, 8],
   [2, 4, 6]
 ]
-
 const corners = [0, 2, 6, 8]
 const sides = [1, 3, 5, 7]
+
+// Board Information
+let board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+let availableMoves = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+
+// Initialize global variables
 let win = false
 let difficulty
 let playerCharacter
 let computerCharacter
 let blockingMove
 
-const onClickCharacter = e => {
-  if (e.target.innerHTML.trim() === 'X') {
-    playerCharacter = 'X'
-    computerCharacter = 'O'
-  } else {
-    playerCharacter = 'O'
-    computerCharacter = 'X'
-  }
-
-  document.querySelector('.pre-game-options').classList.add('dissapear')
-
-  setTimeout(() => {
-    firstMove()
-  }, 1000)
-}
-
-const onMove = e => {
-  disableAllButtons()
-
-  position = e.target.classList[1][4]
-
-  markPlayerMove(position)
-  removeMove(parseInt(position))
-  e.target.innerHTML = playerCharacter
-
-  if (checkForWin('user')) {
-    return
-  }
-  if (checkForCatsGame()) {
-    return
-  }
-
-  setTimeout(() => {
-    switch (difficulty) {
-      case 'Easy':
-        computerEasyMove()
-        break
-      case 'Medium':
-        computerMediumMove()
-        break
-      case 'Hard':
-        computerHardMove()
-        break
-      default:
-        return
-    }
-
-    if (!win) {
-      enableButtons()
-    }
-  }, 1000)
-}
-
+// Computer Moves
 const computerEasyMove = () => {
   const position =
     availableMoves[Math.floor(Math.random() * availableMoves.length)]
@@ -130,6 +80,7 @@ const computerHardMove = () => {
   }
 }
 
+// Hard Mode Functions
 const findFirstMove = () => {
   const index = board.indexOf(1)
   if (index === 4) {
@@ -167,6 +118,7 @@ const findSecondMove = () => {
   }
 }
 
+// Medium Mode Functions
 const findBlock = () => {
   for (let i = 0; i < winningCombos.length; i++) {
     if (
@@ -209,6 +161,7 @@ const findWin = () => {
   return false
 }
 
+// Track Game Moves
 const markPlayerMove = position => {
   board[position] = 1
 }
@@ -218,6 +171,7 @@ const markComputerMove = position => {
   document.querySelector(`.btn-${position}`).innerHTML = computerCharacter
 }
 
+// Track Available Moves
 const removeMove = position => {
   const index = availableMoves.indexOf(position)
 
@@ -226,12 +180,7 @@ const removeMove = position => {
   }
 }
 
-const randomColor = () => {
-  return `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(
-    Math.random() * 255
-  )}, ${Math.floor(Math.random() * 255)})`
-}
-
+// Check for end of game
 const checkForCatsGame = () => {
   if (availableMoves.length === 0) {
     const xColor = randomColor()
@@ -278,6 +227,7 @@ const checkForWin = player => {
   return false
 }
 
+// Disable/Enable Buttons
 const disableAllButtons = () => {
   document.querySelectorAll('button').forEach(button => {
     button.disabled = 'disabled'
@@ -296,6 +246,7 @@ const enableButtons = () => {
   })
 }
 
+// Execute Win
 const Win = (winningPositions, player) => {
   var playerChar
   if (player == 'user') {
@@ -317,6 +268,60 @@ const Win = (winningPositions, player) => {
   document.querySelector('.play-again-btn').classList.add('btn-fade-in')
 
   return
+}
+
+// Event Handler Functions
+const onClickCharacter = e => {
+  if (e.target.innerHTML.trim() === 'X') {
+    playerCharacter = 'X'
+    computerCharacter = 'O'
+  } else {
+    playerCharacter = 'O'
+    computerCharacter = 'X'
+  }
+
+  document.querySelector('.pre-game-options').classList.add('dissapear')
+
+  setTimeout(() => {
+    firstMove()
+  }, 1000)
+}
+
+const onMove = e => {
+  disableAllButtons()
+
+  position = e.target.classList[1][4]
+
+  markPlayerMove(position)
+  removeMove(parseInt(position))
+  e.target.innerHTML = playerCharacter
+
+  if (checkForWin('user')) {
+    return
+  }
+  if (checkForCatsGame()) {
+    return
+  }
+
+  setTimeout(() => {
+    switch (difficulty) {
+      case 'Easy':
+        computerEasyMove()
+        break
+      case 'Medium':
+        computerMediumMove()
+        break
+      case 'Hard':
+        computerHardMove()
+        break
+      default:
+        return
+    }
+
+    if (!win) {
+      enableButtons()
+    }
+  }, 1000)
 }
 
 const onClickBack = () => {
@@ -394,6 +399,14 @@ const onOmouseout = () => {
   document.querySelector('.char-x').classList.remove('de-emphasize')
 }
 
+// Utility Functions
+const randomColor = () => {
+  return `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(
+    Math.random() * 255
+  )}, ${Math.floor(Math.random() * 255)})`
+}
+
+// Add Event Listeners
 document.querySelector('.char-x').addEventListener('mouseover', onXmouseover)
 
 document.querySelector('.char-o').addEventListener('mouseover', onOmouseover)

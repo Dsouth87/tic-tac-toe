@@ -10,16 +10,16 @@ body {
   font-family: 'Roboto', sans-serif;
   line-height: 1.4;
   background: #000;
-  color: #fff;
+  color: #eee;
 }
 
 a {
   text-decoration: none;
-  color: #fff;
+  color: #eee;
 }
 
 button {
-  color: #fff;
+  color: #eee;
   background: #000;
   border: none;
   font-size: 10rem;
@@ -41,7 +41,7 @@ button {
   height: 100%;
   width: 100%;
   background: #333;
-  color: white;
+  color: #eee;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -85,19 +85,19 @@ button {
 }
 
 .btn {
-  border: #fff solid 1px;
+  border: #eee solid 1px;
   padding: 1.5rem 2rem;
   font-size: 2rem;
   border-radius: 5px;
   background: #000;
-  color: #fff;
+  color: #eee;
   outline: none;
   transition: all 0.75s ease;
 }
 
 .btn:hover {
   cursor: pointer;
-  background: #fff;
+  background: #eee;
   color: #000;
 }
 

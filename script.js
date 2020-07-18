@@ -226,14 +226,22 @@ const removeMove = position => {
   }
 }
 
+const randomColor = () => {
+  return `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(
+    Math.random() * 255
+  )}, ${Math.floor(Math.random() * 255)})`
+}
+
 const checkForCatsGame = () => {
   if (availableMoves.length === 0) {
+    const xColor = randomColor()
+    const oColor = randomColor()
     document.querySelector('.announcements h2').innerHTML = "Cat's Game!"
     document.querySelectorAll('.box').forEach(box => {
       if (box.querySelector('button').innerHTML === 'X') {
-        box.classList.add('X-win')
+        box.firstElementChild.style.color = xColor
       } else {
-        box.classList.add('O-win')
+        box.firstElementChild.style.color = oColor
       }
     })
     document.querySelector('.play-again-btn').style.display = 'block'
@@ -291,21 +299,23 @@ const enableButtons = () => {
 const Win = (winningPositions, player) => {
   var playerChar
   if (player == 'user') {
-    playerChar = playerCharacter
+    playerChar = 'Player 1'
   } else if (player == 'computer') {
-    playerChar = computerCharacter
+    playerChar = 'Computer'
   }
+  win = true
+
   for (let i = 0; i < winningPositions.length; i++) {
-    document
-      .querySelector(`.box-${winningPositions[i]}`)
-      .classList.add(`${playerChar}-win`)
+    document.querySelector(
+      `.box-${winningPositions[i]}`
+    ).firstElementChild.style.color = `var(--${difficulty.toLowerCase()}-color)`
   }
 
-  win = true
   disableAllButtons()
   document.querySelector('.announcements h2').innerHTML = `${playerChar} Wins!`
   document.querySelector('.play-again-btn').style.display = 'block'
   document.querySelector('.play-again-btn').classList.add('btn-fade-in')
+
   return
 }
 
@@ -327,6 +337,7 @@ const onClickPlayAgain = () => {
   document.querySelectorAll('.box').forEach(box => {
     let position = box.classList[1][4]
     box.className = `box box-${position}`
+    box.firstElementChild.style.color = '#fff'
   })
   enableAllButtons()
 }
@@ -336,18 +347,18 @@ const onClickDifficulty = e => {
   e.target.classList.add('selected')
   switch (e.target.innerHTML) {
     case 'Hard':
-      e.target.style.color = 'rgba(255, 0, 0, 0.666)'
+      e.target.style.color = 'var(--hard-color)'
       document.querySelector('.easy').style.color = '#222'
       document.querySelector('.medium').style.color = '#222'
       break
     case 'Medium':
-      e.target.style.color = 'rgba(255, 255, 0, 0.927)'
+      e.target.style.color = 'var(--medium-color)'
       document.querySelector('.hard').style.color = '#222'
       document.querySelector('.easy').style.color = '#222'
       break
 
     case 'Easy':
-      e.target.style.color = 'rgba(0, 128, 0, 0.892)'
+      e.target.style.color = 'var(--easy-color)'
       document.querySelector('.hard').style.color = '#222'
       document.querySelector('.medium').style.color = '#222'
       break
@@ -369,6 +380,28 @@ const onClickDifficulty = e => {
     .querySelector('.character-selection')
     .classList.remove('de-emphasize')
 }
+
+const onXmouseover = () => {
+  document.querySelector('.char-o').classList.add('de-emphasize')
+}
+const onOmouseover = () => {
+  document.querySelector('.char-x').classList.add('de-emphasize')
+}
+const onXmouseout = () => {
+  document.querySelector('.char-o').classList.remove('de-emphasize')
+}
+const onOmouseout = () => {
+  document.querySelector('.char-x').classList.remove('de-emphasize')
+}
+
+document.querySelector('.char-x').addEventListener('mouseover', onXmouseover)
+
+document.querySelector('.char-o').addEventListener('mouseover', onOmouseover)
+
+document.querySelector('.char-x').addEventListener('mouseout', onXmouseout)
+
+document.querySelector('.char-o').addEventListener('mouseout', onOmouseout)
+
 document
   .querySelector('.character-selection')
   .addEventListener('click', onClickCharacter)

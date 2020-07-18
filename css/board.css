@@ -1,3 +1,12 @@
+:root {
+  --easy-color-light: rgba(0, 164, 0, 0.892);
+  --easy-color: rgba(0, 128, 0, 0.892);
+  --easy-color-dark: rgba(0, 106, 0, 0.892);
+  --medium-color: rgba(255, 255, 0, 0.927);
+  --hard-color: rgba(255, 0, 0, 0.666);
+  --player-color: #2a80df;
+}
+
 .pre-game-options {
   display: flex;
   flex-direction: column;
@@ -55,13 +64,13 @@
 }
 
 .difficulty-level.easy:hover {
-  color: rgba(0, 128, 0, 0.892);
+  color: var(--easy-color);
 }
 .difficulty-level.medium:hover {
-  color: rgba(255, 255, 0, 0.927);
+  color: var(--medium-color);
 }
 .difficulty-level.hard:hover {
-  color: rgba(255, 0, 0, 0.666);
+  color: var(--hard-color);
 }
 
 .de-emphasize {
@@ -81,11 +90,11 @@
 }
 
 .characters .char-x:hover {
-  color: #2a80df;
+  color: #fff;
 }
 
 .characters .char-o:hover {
-  color: #58b900;
+  color: #fff;
 }
 
 .board-page {
@@ -122,13 +131,13 @@
   text-align: center;
 }
 
-.X-win button {
+/* .X-win button {
   color: #2a80df !important;
 }
 
 .O-win button {
   color: #58b900 !important;
-}
+} */
 
 .board .box-1,
 .board .box-2,
